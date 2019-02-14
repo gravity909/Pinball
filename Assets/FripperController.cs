@@ -11,6 +11,12 @@ public class FripperController : MonoBehaviour
     //弾いた時の傾き
     private float flickAngle = -20;
 
+    //右フリッパーのID
+    private int rightFingerId = 5;
+
+    //左フリッパーのID
+    private int leftFingerId = 5;
+
     // Use this for initialization
     void Start()
     {
@@ -49,32 +55,46 @@ public class FripperController : MonoBehaviour
         //マルチタップ対応
         if (Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
-            //画面右半分をタッチしていたら右フリッパー起動
-            if (touch.position.x > Screen.width * 0.5f && tag == "RightFripperTag")
+            for (int i = 0; i < Input.touchCount; i++)
             {
-                if (touch.phase == TouchPhase.Began)
+                //画面タッチの左右でIDを割り振る
+                if (Input.GetTouch(i).position.x > Screen.width * 0.5f && tag == "RightFripperTag")
                 {
-                    SetAngle(this.flickAngle);
+                    rightFingerId = Input.GetTouch(i).fingerId;
                 }
-                else if (touch.phase == TouchPhase.Ended)
+                else if (Input.GetTouch(i).position.x < Screen.width * 0.5f && tag == "LeftFripperTag")
                 {
-                    SetAngle(this.defaultAngle);
+                    leftFingerId = Input.GetTouch(i).fingerId;
+                }
+
+
+
+                //タッチによって、上げ下げを指定
+                if (Input.GetTouch(i).fingerId == rightFingerId && tag == "RightFripperTag")
+                {
+                    if (Input.GetTouch(i).phase == TouchPhase.Began)
+                    {
+                        SetAngle(this.flickAngle);
+                    }
+                    else if (Input.GetTouch(i).phase == TouchPhase.Ended)
+                    {
+                        SetAngle(this.defaultAngle);
+                        rightFingerId = 5;
+                    }
+                }
+                else if (Input.GetTouch(i).fingerId == leftFingerId && tag == "LeftFripperTag")
+                {
+                    if (Input.GetTouch(i).phase == TouchPhase.Began)
+                    {
+                        SetAngle(this.flickAngle);
+                    }
+                    else if (Input.GetTouch(i).phase == TouchPhase.Ended)
+                    {
+                        SetAngle(this.defaultAngle);
+                        leftFingerId = 5;
+                    }
                 }
             }
-            //画面左半分をタッチしていたら左フリッパー起動
-            else if (touch.position.x < Screen.width * 0.5f && tag == "LeftFripperTag")
-            {
-                if (touch.phase == TouchPhase.Began)
-                {
-                    SetAngle(this.flickAngle);
-                }
-                else if (touch.phase == TouchPhase.Ended)
-                {
-                    SetAngle(this.defaultAngle);
-                }
-            }
-            
         }
     }
 

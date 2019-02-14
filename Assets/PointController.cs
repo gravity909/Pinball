@@ -10,13 +10,7 @@ public class PointController : MonoBehaviour {
 
     // 合計ポイント
     private int sumPoint;
-    //プロパティー
-    //public int SumPoint
-    //{
-    //    get { return this.sumPoint; }  //取得用
-    //    private set { this.sumPoint = value; } //値入力用
-    //}
-       
+          
 
     // Use this for initialization
     void Start()
